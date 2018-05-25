@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>TouchEvent</title>
+</head>
+
+<body onload="startMonitor()">
+
+<div id="container" style="width:100%;height:1000px;background:#0000ff">
+
+</div>
+
+
+<script src="js/jquery-3.3.1.min.js"></script>
+<script>
+
+function startMonitor() {
+    console.log("startMonitor...");
+
+    var startEvt, moveEvt, endEvt, touchScreen, started;
+
+    if("ontouchstart" in window){
+        startEvt = "touchstart";
+        moveEvt = "touchmove";
+        endEvt = "touchend";
+        touchScreen = true;
+    } else {
+        startEvt = "mousedown";
+        moveEvt = "mousemove";
+        endEvt = "mouseup";
+        touchScreen = false;
+    }
+
+    console.log("startEvt = "+ startEvt);
+    $("#container").on(startEvt, e => {
+        started = true;
+        if (touchScreen) {
+            var _touch = e.originalEvent.targetTouches[0];
+            var _x= _touch.pageX;
+            console.log("start x = "+ _x);
+        } else {
+            console.log("start x = "+ e.pageX);
+        }
+    });
+
+    $("#container").on(moveEvt, e => {
+        if (!started) return;
+        if (touchScreen) {
+            var _touch = e.originalEvent.targetTouches[0];
+            var _x= _touch.pageX;
+            console.log("move x = "+ _x);
+        } else {
+            console.log("move x = "+ e.pageX);
+        }
+    });
+
+    $("#container").on(endEvt, e => {
+        started = false;
+        if (touchScreen) {
+            var _touch = e.originalEvent.targetTouches[0];
+            var _x= _touch.pageX;
+            console.log("end x = "+ _x);
+        } else {
+            console.log("end x = "+ e.pageX);
+        }
+    });
+}
+</script>
+</body>
+
+</html>
